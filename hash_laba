@@ -1,24 +1,15 @@
-def div_hash(string: str) -> int:
-    key = 0
-    for i in range(len(string)):
-        key += ord(string[i]) * (2 ** i)
-    return key % len(string)
 
-def mul_hash(string: str) -> int:
+
+def mul_hash(string: str | int) -> int:
     key = 0
     C = 0.1
     for i in range(len(string)):
         key += ord(string[i]) * (2 ** i)
     return len(string) * int((key * C))
 
-def add_hash(string: str) -> int:
-    sum = 0
-    for i in range(len(string)):
-        sum += ord(string[i]) * (2 ** i)
-    return sum % 256
-
-def crc32(data):
+def crc32(data: str | int) -> int:
     crc = 0xffffffff
+    data = bytes(data, encoding='utf-8')
     for b in data:
         crc = crc ^ b
         for i in range(8):
@@ -28,3 +19,10 @@ def crc32(data):
                 crc = (crc >> 1)
     return crc ^ 0xffffffff
 
+print("Метод умножения")
+a = input("Введите строку: ")
+print(f"Результат выполнения хэширования: {mul_hash(a)}\n")
+
+print("Метод crc32")
+a = input("Введите строку: ")
+print(f"Результат выполнения хэширования: {crc32(a)}")
