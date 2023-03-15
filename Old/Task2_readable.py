@@ -11,6 +11,7 @@ special_symbhols = ['.', ',', ':', '\n', '-', ')', '1', '2',
 
 def get_text(file_name: str, wiki=False) -> str:
     if wiki:
+        start = time.time()
         wikipedia.set_lang('ru')
         return delete_special_symbols(wikipedia.page(file_name).content)
     if '.docx' in file_name:
