@@ -1,3 +1,6 @@
+import json
+
+
 def search_insert(nums, target) -> int:
     # ТУПА БИНАРНЫЙ ПОИСК ДЛЯ ПОИСКА МЕСТА ВСТАВКИ
     low, high = 0, len(nums)
@@ -5,7 +8,7 @@ def search_insert(nums, target) -> int:
         return 0
     while low < high:
         mid = (low + high) // 2
-        if target > nums[mid][0]:
+        if target[1] > nums[mid][1]:
             low = mid + 1
         else:
             high = mid
@@ -19,20 +22,59 @@ class Queue:
         self.queue = []
 
     def push(self, element):
-        self.queue.insert(search_insert(self.queue, element))  # Как бы мощно сортируем в потоке
+        self.queue.insert(search_insert(self.queue, element), element)  # Как бы мощно сортируем в потоке
 
     def get(self):
         return self.queue.pop(-1)  # Возвращаем последний элемент, хихи хаха
 
+    def __call__(self):
+        if len(self.queue) == 0:
+            return False
+        else:
+            return True
 
-metro_map = {
-    # Станция: [(сколько времени, станция), (сколько времени, станция)]
-    # Начинаю с желткой и вправо, если есть переход на другую ветку, то расстояние считаю за 0 минут)
-    # Расстояние == время чтобы приехать. Информация с карты Артемия Лебедева https://metrorus.ru/moscow-metro/
-    # Необходимо брать наименьшее время которое показывает до станции
-    'Рассказовка': [(5, 'Новопеределкино')],
-    'Новопеределкино': [(5, 'Бобровское шоссе'), (5, 'Рассказовка')],
-    'Бобровское шоссе': [(5, 'Солнцево'), (5, "Новопеределкино")],
-    'Солнцево': [(5, 'Бобровское шоссе'), (5, "Говорово")],  # Продолжите кто-то, я устал
 
-}
+def dijkstra(start, goal, graph):
+    queue = Queue()
+    queue.push([start, 0])
+    cost_visited = {start: 0}
+    visited = {start: None}
+    while queue():
+        cur_node, cur_cost = queue.get()
+        if cur_node == goal:
+            break
+        next_nodes = graph[cur_node]
+        for next_node in next_nodes:
+            neigh_node, neigh_cost = next_node
+            new_cost = cost_visited[cur_node] + neigh_cost
+
+            if neigh_node not in cost_visited:
+                queue.push((neigh_node, neigh_cost))
+                cost_visited[neigh_node] = new_cost
+                visited[neigh_node] = cur_node
+    return visited, cost_visited
+
+
+
+
+
+with open('streets.json', 'r') as f:
+    streets = json.load(f)
+
+for i in streets:
+    streets[i] = list(map(tuple, streets[i]))
+
+#print(streets)
+
+visited, cost = dijkstra('Москворецкая', 'площадь Ильинские Ворота', streets)
+
+start = 'Москворецкая'
+goal = 'площадь Ильинские Ворота'
+#print(visited)
+cur_node = goal
+print(f'{goal} ', end='')
+while cur_node != start:
+    cur_node = visited[cur_node]
+    print(f'---> {cur_node}', end=' ')
+print()
+print(f' Суммарная стоимость пути: {cost[goal]}')
