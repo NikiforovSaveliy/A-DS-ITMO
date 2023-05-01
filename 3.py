@@ -4,7 +4,7 @@ n = 10
 
 nums = [randint(-100, 100) for i in range(n)]
 
-def find_longest_subsequence_with_dp(N):
+def find(N):
     dp = [1] * len(N)
     max_len = 1
     end_index = 0
@@ -18,7 +18,7 @@ def find_longest_subsequence_with_dp(N):
     print(dp)
     return N[end_index-max_len+1:end_index+1], max_len  
 
-result, max_len = find_longest_subsequence_with_dp(nums)
+result, max_len = find(nums)
 print('Исходный массив: ',nums)
 print('Максимальная возрастающая последовательность: ',result) 
 print('Длина: ', max_len) 

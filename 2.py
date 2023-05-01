@@ -1,6 +1,6 @@
 from random import randint
 
-def matrix_chain_order(p):
+def find(p):
     n = len(p) - 1
     dp = [[0 for _ in range(n+1)] for _ in range(n+1)]
     s = [[0 for _ in range(n+1)] for _ in range(n+1)]
@@ -27,7 +27,7 @@ def print_optimal_parens(s, i, j):
         print(")", end="")
 
 nums  = [10, 20, 30, 40, 30]
-m, s = matrix_chain_order(nums)
+m, s = find(nums)
 print("Оптимальное количество операций: ", m)
 print_optimal_parens(s, 1, len(nums)-1)
 
