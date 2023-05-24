@@ -58,7 +58,7 @@ def dijkstra(start, goal, graph):
 
 
 
-with open('streets.json', 'r') as f:
+with open('../SubStr/streets.json', 'r') as f:
     streets = json.load(f)
 
 for i in streets:
